@@ -1,0 +1,37 @@
+# Nome do workflow que deve aparecer na aba "Actions" do GitHub
+name: Run Selenium Tests
+
+# Gatilhos: Necessário rodar este workflow toda vez que houver um push ou pull request na branch 'main'
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Tarefas a serem executadas
+jobs:
+  build:
+    # tipo da máquina virtual para rodar os testes
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa o código do repositório para a máquina virtual
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura o ambiente Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Instala as dependências do projeto
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Roda os testes com Pytest
+      # IMPORTANTE: --headless para que o Chrome rode sem interface gráfica no servidor
+      - name: Run Pytest
+        run: pytest --headless

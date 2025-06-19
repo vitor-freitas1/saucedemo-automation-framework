@@ -4,19 +4,29 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--headless", action="store_true", help="Run browser in headless mode"
+    )
+
 
 @pytest.fixture(scope="session")
-def driver():
+def driver(request):
 
-    # setup
+    # --- Setup ---
     chrome_options = Options()
+
+    # In case 'pytest --headless' is used
+    if request.config.getoption("headless"):
+        chrome_options.add_argument("--headless")
+
     chrome_options.add_argument("--incognito")
 
     # Automatically downloads and uses the correct chromedriver
     service = ChromeService(ChromeDriverManager().install())
 
     # The local variable for the browser instance
-    browser = webdriver.Chrome(options=chrome_options)
+    browser = webdriver.Chrome(service=service, options=chrome_options)
 
     browser.implicitly_wait(10)
     browser.maximize_window()
