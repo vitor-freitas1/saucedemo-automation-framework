@@ -4,6 +4,7 @@ from pages.login_page import LoginPage
 
 
 @pytest.mark.login
+@pytest.mark.smoke
 class Test02ValidLogin:
     def test_valid_login(self, driver):
 

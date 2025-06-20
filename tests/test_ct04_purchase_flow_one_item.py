@@ -8,6 +8,7 @@ from pages.login_page import LoginPage
 
 
 @pytest.mark.purchase
+@pytest.mark.regression
 class TestPurchaseFlowOneItem:
 
     def test_purchase_single_item(self, driver):
