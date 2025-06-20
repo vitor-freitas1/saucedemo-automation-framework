@@ -10,7 +10,7 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def driver(request):
 
     # --- Setup ---
